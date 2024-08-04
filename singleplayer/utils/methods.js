@@ -14,8 +14,10 @@ const dealer = {
   busted: false,
 };
 
-const createDeckURL = "https://cors-anywhere.herokuapp.com/https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"; // 6 decks of cards, like the original game
-const drawCardURL = "https://cors-anywhere.herokuapp.com/https://www.deckofcardsapi.com/api/deck/{deckId}/draw/?count=1";
+const proxyBaseURL = "https://blackjacking.vercel.app/api/proxy?url=";
+
+const createDeckURL = `${proxyBaseURL}https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6`; // 6 decks of cards, like the original game
+const drawCardURLTemplate = `${proxyBaseURL}https://www.deckofcardsapi.com/api/deck/{deckId}/draw/?count=1`;
 
 const playerCardsContainer = document.getElementById("playerCards");
 const dealerCardsContainer = document.getElementById("dealerCards");
@@ -46,8 +48,8 @@ function loadStorage() {
 
 function preloadCardImages() {
   cardImages["back"] = new Image();
-  cardImages["back"].src = "https://cors-anywhere.herokuapp.com/https://www.deckofcardsapi.com/static/img/back.png";
-  fetch(`https://cors-anywhere.herokuapp.com/https://www.deckofcardsapi.com/api/deck/new/draw/?count=52`)
+  cardImages["back"].src = `${proxyBaseURL}https://www.deckofcardsapi.com/static/img/back.png`;
+  fetch(`${proxyBaseURL}https://www.deckofcardsapi.com/api/deck/new/draw/?count=52`)
     .then((response) => response.json())
     .then((data) => {
       data.cards.forEach((card) => {
@@ -373,7 +375,6 @@ function initializeGame() {
     fetch(createDeckURL)
       .then((response) => {
         // Ensure the response has a status code between 200-299 (Successful)
-        if (!response.ok) throw new Error("Network response was not ok: " + "\n" + response.status);
         if (!response.ok) throw new Error("Network response was not ok: " + "\n" + response.status);
         return response.json();
       })
