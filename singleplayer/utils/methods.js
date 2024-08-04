@@ -48,7 +48,7 @@ function loadStorage() {
 
 function preloadCardImages() {
   cardImages["back"] = new Image();
-  cardImages["back"].src = `${proxyBaseURL}https://www.deckofcardsapi.com/static/img/back.png`;
+  cardImages["back"].src = "https://www.deckofcardsapi.com/static/img/back.png";
   fetch(`${proxyBaseURL}https://www.deckofcardsapi.com/api/deck/new/draw/?count=52`)
     .then((response) => response.json())
     .then((data) => {
