@@ -373,7 +373,7 @@ function initializeGame() {
     fetch(createDeckURL)
       .then((response) => {
         // Ensure the response has a status code between 200-299 (Successful)
-        if (!response.ok) throw new Error("Network response was not ok: " + "\n" + response.json());
+        if (!response.ok) throw new Error("Network response was not ok: " + "\n" + response.status + "\n" + response.statusText);
         return response.json();
       })
       .then((data) => {
