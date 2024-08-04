@@ -374,6 +374,7 @@ function initializeGame() {
       .then((response) => {
         // Ensure the response has a status code between 200-299 (Successful)
         if (!response.ok) throw new Error("Network response was not ok: " + "\n" + response.status);
+        if (!response.ok) throw new Error("Network response was not ok: " + "\n" + response.status);
         return response.json();
       })
       .then((data) => {
