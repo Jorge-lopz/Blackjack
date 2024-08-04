@@ -37,7 +37,7 @@ function loadStorage() {
       playing: true,
       busted: false,
     };
-    playerPFP.src = localStorage.getItem(`${player.name}PFP`) || "../common/assets/pfp.png";
+    playerPFP.src = localStorage.getItem(`${player.name}PFP`) || "./common/assets/pfp.png";
     document.getElementById("playerName").innerHTML = `${player.name}<br><span id="playerWins">Wins: 0</span>`;
     updateWinner();
     document.getElementById("start").disabled = false;
@@ -121,7 +121,7 @@ function login() {
 function logout() {
   localStorage.removeItem("currentPlayer");
   player = {};
-  playerPFP.src = "../common/assets/pfp.png";
+  playerPFP.src = "./common/assets/pfp.png";
   document.getElementById("playerName").innerHTML = 'PLAYER<br><span id="playerWins">Wins: 0</span>';
   document.getElementById("start").disabled = true;
   document.getElementById("choosePlayer").classList.add("active");
@@ -134,7 +134,7 @@ function logout() {
 
 async function dealerStart() {
   try {
-    const response = await fetch(drawCardURL.replace("{deckId}", deckId).replace("count=1", "count=2"));
+    const response = await fetch(drawCardURLTemplate.replace("{deckId}", deckId).replace("count=1", "count=2"));
     if (!response.ok) throw new Error("Network response was not ok: " + response.statusText);
 
     const data = await response.json();
@@ -253,7 +253,7 @@ function hit() {
   document.getElementById("hit").disabled = true;
   let hand = player.hand;
   return new Promise((resolve, reject) => {
-    fetch(drawCardURL.replace("{deckId}", deckId))
+    fetch(drawCardURLTemplate.replace("{deckId}", deckId))
       .then((response) => {
         if (!response.ok) throw new Error("Network response was not ok: " + response.statusText);
         return response.json();
