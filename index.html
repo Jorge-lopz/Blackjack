@@ -20,12 +20,6 @@
 
 <body>
 
-    <!-- ANALYTICS -->
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
-
     <!-- BOOTSTRAP -> https://getbootstrap.com/ -->
     <!-- ANIMATIONS -> https://animate.style/ -->
 
@@ -81,7 +75,7 @@
 
         <div class="d-flex justify-content-center align-items-center" style="gap: 1rem">
             <button id="stand" class="btn" disabled>Stand</button>
-            <button id="start" class="btn" name="Start" onclick="startGame()" disabled></button>
+            <button id="start" class="btn" name="Start" aria-label="Start" onclick="startGame()" disabled></button>
             <button id="hit" class="btn" disabled>Hit</button>
         </div>
 
@@ -119,5 +113,11 @@
     </main>
 
 </body>
+
+<!-- ANALYTICS -->
+<script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 
 </html>
