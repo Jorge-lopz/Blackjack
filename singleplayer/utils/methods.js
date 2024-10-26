@@ -162,8 +162,10 @@ async function dealerStart() {
       // If the card is an Ace, add it to the end of the hand, if not, add it to the beginning (so that aces are then evaluated last)
       if (card === "A") dealer.hand.push(card);
       else dealer.hand.unshift(card);
-      dealer.handValue = getScore(dealer.hand);
-      document.getElementById("dealerHandValue").innerText = dealer.handValue;
+      if (index == 0) {
+        dealer.handValue = getScore(dealer.hand);
+        document.getElementById("dealerHandValue").innerText = dealer.handValue;
+      }
     }
 
     // Checks if the dealer has a blackjack
@@ -197,10 +199,12 @@ function flipCard(card) {
 }
 
 async function dealerTurn() {
+  dealer.handValue = getScore(dealer.hand);
+  document.getElementById("dealerHandValue").innerText = dealer.handValue;
   await flipCard(dealerCardsContainer.querySelector("[card-src]"));
   try {
     while (dealer.handValue < 17) {
-      const response = await fetch(drawCardURL.replace("{deckId}", deckId));
+      const response = await fetch(drawCardURLTemplate.replace("{deckId}", deckId));
       if (!response.ok) throw new Error("Network response was not ok: " + response.statusText);
 
       const data = await response.json();
@@ -430,27 +434,28 @@ function waitButtonClick(buttonId) {
 async function end() {
   let winner = "";
 
-  // If the player has busted, the dealer doesn't have to continue playing
-  if (player.busted) {
+  await dealerTurn();
+
+  // Find the winner
+  let playerHand = player.handValue;
+  let dealerHand = dealer.handValue;
+
+  if (dealer.busted) {
+    document.querySelector(".value>#dealerHandValue").parentElement.innerText = `BUSTED (${dealer.handValue})`;
+    if (player.busted) {
+      winner = "tie";
+    } else {
+      winner = "player";
+    }
+  } else if (player.busted) {
     document.querySelector(".value>#playerHandValue").parentElement.innerText = `BUSTED (${player.handValue})`;
     winner = "dealer";
+  } else if (playerHand > dealerHand) {
+    winner = "player";
+  } else if (playerHand < dealerHand) {
+    winner = "dealer";
   } else {
-    await dealerTurn();
-
-    // Find the winner
-    let playerHand = player.handValue;
-    let dealerHand = dealer.handValue;
-
-    if (dealer.busted) {
-      document.querySelector(".value>#dealerHandValue").parentElement.innerText = `BUSTED (${dealer.handValue})`;
-      winner = "player";
-    } else if (playerHand > dealerHand) {
-      winner = "player";
-    } else if (playerHand < dealerHand) {
-      winner = "dealer";
-    } else {
-      winner = "tie";
-    }
+    winner = "tie";
   }
 
   if (winner === "dealer") {
@@ -458,7 +463,7 @@ async function end() {
     console.log("DEALER WINS!");
     let winnerValue = document.querySelector(".value>#dealerHandValue").parentElement;
     winnerValue.innerText = `WINNER (${dealer.handValue})`;
-    winnerValue.style.color = "#ffd337";
+    winnerValue.style.color = "#ffd277";
     winnerValue.style.fontWeight = "500";
     player.dealerWins++;
   } else if (winner === "player") {
@@ -466,15 +471,19 @@ async function end() {
     console.log(player.name, "WINS!");
     let winnerValue = document.querySelector(".value>#playerHandValue").parentElement;
     winnerValue.innerText = `WINNER (${player.handValue})`;
-    winnerValue.style.color = "#ffd337";
+    winnerValue.style.color = "#ffd277";
     winnerValue.style.fontWeight = "500";
     player.wins++;
   } else if (winner === "tie") {
     document.getElementById("chips").classList.add("animate__animated", "animate__zoomOut");
     console.log("IT'S A TIE!");
-    player.dealerWins++;
-    document.querySelectorAll(".value").forEach((element) => (element.innerText = `TIE (${dealer.handValue})`));
-    player.wins++;
+    if (dealer.busted && player.busted) {
+      document.querySelectorAll(".value").forEach((element) => (element.innerText = `BUSTED (${dealer.handValue})`));
+    } else {
+      player.dealerWins++;
+      player.wins++;
+      document.querySelectorAll(".value").forEach((element) => (element.innerText = `TIE (${dealer.handValue})`));
+    }
   }
 
   await delay(1000);

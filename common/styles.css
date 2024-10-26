@@ -275,7 +275,7 @@ button {
     --order: 0;
     position: absolute;
     height: 39dvh;
-    transition: transform 3s ease-out, opacity 0.5s ease-in-out;
+    transition: transform 1.5s, opacity 0.5s ease-in-out;
   }
 }
 
