@@ -170,7 +170,7 @@ async function dealerStart() {
 
     // Checks if the dealer has a blackjack
     if (dealer.handValue == 21) {
-      console.log("DEALER HAS A BLACKJACK!");
+      //console.log("DEALER HAS A BLACKJACK!");
     }
   } catch (error) {
     console.error("There was a problem with the fetch operation: ", error);
@@ -232,10 +232,10 @@ async function dealerTurn() {
       document.getElementById("dealerHandValue").innerText = dealer.handValue;
       // Checks if the dealer busted
       if (dealer.handValue > 21) {
-        console.log("DEALER BUSTED!");
+        //console.log("DEALER BUSTED!");
         dealer.busted = true;
       } else if (dealer.handValue == 21) {
-        console.log("DEALER HAS A BLACKJACK!");
+        //console.log("DEALER HAS A BLACKJACK!");
       }
     }
   } catch (error) {
@@ -247,7 +247,7 @@ async function dealerTurn() {
 function stand() {
   return new Promise((resolve) => {
     player.playing = false;
-    console.log(`${player.name} STANDS`);
+    //console.log(`${player.name} STANDS`);
     resolve();
   });
 }
@@ -286,10 +286,10 @@ function hit() {
         if (player.handValue > 21) {
           player.busted = true;
           player.playing = false;
-          console.log(`${player.name} BUSTED!`);
+          //console.log(`${player.name} BUSTED!`);
           document.getElementById("bust").classList.add("active");
         } else if (player.handValue == 21) {
-          console.log(`${player.name} HAS A BLACKJACK!`);
+          //console.log(`${player.name} HAS A BLACKJACK!`);
           document.getElementById("blackjack").classList.add("active");
           player.playing = false;
         }
@@ -460,7 +460,7 @@ async function end() {
 
   if (winner === "dealer") {
     document.getElementById("chips").classList.add("animate__animated", "animate__fadeOutUp");
-    console.log("DEALER WINS!");
+    //console.log("DEALER WINS!");
     let winnerValue = document.querySelector(".value>#dealerHandValue").parentElement;
     winnerValue.innerText = `WINNER (${dealer.handValue})`;
     winnerValue.style.color = "#ffd277";
@@ -468,7 +468,7 @@ async function end() {
     player.dealerWins++;
   } else if (winner === "player") {
     document.getElementById("chips").classList.add("animate__animated", "animate__fadeOutDown");
-    console.log(player.name, "WINS!");
+    //console.log(player.name, "WINS!");
     let winnerValue = document.querySelector(".value>#playerHandValue").parentElement;
     winnerValue.innerText = `WINNER (${player.handValue})`;
     winnerValue.style.color = "#ffd277";
@@ -476,7 +476,7 @@ async function end() {
     player.wins++;
   } else if (winner === "tie") {
     document.getElementById("chips").classList.add("animate__animated", "animate__zoomOut");
-    console.log("IT'S A TIE!");
+    //console.log("IT'S A TIE!");
     if (dealer.busted && player.busted) {
       document.querySelectorAll(".value").forEach((element) => (element.innerText = `BUSTED (${dealer.handValue})`));
     } else {
