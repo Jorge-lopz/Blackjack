@@ -127,7 +127,7 @@ function logout() {
 	document.getElementById("choosePlayer").classList.add("active");
 	document.getElementById("logout").disabled = true;
 
-	window.location.reload(true);
+	if (!finished) window.location.reload(true);
 
 	updateWinner();
 }
@@ -326,6 +326,8 @@ function getScore(hand) {
 function initializeGame() {
 	finished = false;
 
+	// Disables buttons on game start
+	document.getElementById("logout").disabled = true;
 	document.getElementById("start").disabled = true;
 	document.getElementById("stand").disabled = true;
 	document.getElementById("hit").disabled = true;
@@ -497,4 +499,7 @@ async function end() {
 	playerToUpdate.dealerWins = player.dealerWins;
 	localStorage.setItem(player.name, JSON.stringify(playerToUpdate));
 	document.getElementById("chipsContainer").classList.remove("shown");
+
+	// Re-enable logout button after game is over
+	document.getElementById("logout").disabled = false;
 }
