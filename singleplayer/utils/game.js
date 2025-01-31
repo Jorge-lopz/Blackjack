@@ -1,21 +1,21 @@
 async function startGame() {
-  finished = false;
+	finished = false;
 
-  await initializeGame();
+	await initializeGame();
 
-  dealerStart();
+	dealerStart();
 
-  // Deal the player the first 2 cards
-  for (let index = 0; index < 2; index++) {
-    await hit(player);
-  }
+	// Deal the player the first 2 cards
+	for (let index = 0; index < 2; index++) {
+		await hit(player);
+	}
 
-  // Starts game loop
-  gameLoop();
+	// Starts game loop
+	gameLoop();
 }
 
 async function gameLoop() {
-  while (!finished) {
-    await gameRound();
-  }
+	while (!finished) {
+		await gameRound();
+	}
 }
